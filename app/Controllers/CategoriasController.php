@@ -101,6 +101,8 @@ class CategoriasController
     {
         $categoria = Categoria::buscar($id);
 
+        $cursos = Curso::buscarPor("categoria_id", $id);
+        
         if (empty($categoria)) {
             return $response->json([
                 'mensagem' => 'Categoria não encontrada!',
@@ -108,7 +110,7 @@ class CategoriasController
             ], 404);
         }
 
-        if (count($categoria->curso ?? []) > 0) {
+        if ($cursos != null) {
             throw new HttpException(409, 'A categoria tem curso e não pode ser excluida.');
         }
 
